@@ -3,7 +3,7 @@ import type { TimelineItem } from "@/types";
 export const about = {
   paragraphs: [
     "I'm a Computer Science undergrad at VIT Chennai (B.Tech CSE, 2025–2029) who likes the parts of software most people never see: the transaction that has to hold under fifty simultaneous requests, the rate limiter that must fail closed, the guardrail standing between an LLM and its secrets.",
-    "I build things end to end — design the API, containerise it, load-test it, then try to break it. That loop of building, breaking and learning is how I approach backend engineering and application security alike.",
+    "I build things end to end - design the API, containerise it, load-test it, then try to break it. That loop of building, breaking and learning is how I approach backend engineering and application security alike.",
   ],
   focus: ["Backend Development", "Application Security", "AI / LLM Security"],
   learning: ["FastAPI internals", "OWASP Top 10", "eBPF & Linux security", "Kubernetes"],
