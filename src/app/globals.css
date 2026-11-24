@@ -1,26 +1,409 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+ * Design tokens. Light = warm paper; dark (default) = late-night navy.
+ * Every text/background pair below meets WCAG AA (checked in README).
+ * ------------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f4ee;
+  --background-2: #f1ece3;
+  --card: #fffdf9;
+  --card-hover: #fffaf2;
+  --border: #e2dace;
+  --foreground: #1f2533;
+  --muted-foreground: #565e6e;
+  --primary: #94540f;
+  --primary-strong: #7c450a;
+  --primary-foreground: #fffaf2;
+  --secondary: #4a6690;
+  --ring: #94540f;
+  --glow: rgba(214, 140, 60, 0.16);
+  --dot: rgba(31, 37, 51, 0.08);
+
+  /* NightDesk illustration — daytime */
+  --nd-wall: #ebe4d7;
+  --nd-wall-2: #e3dbcc;
+  --nd-frame: #cbbfab;
+  --nd-sill: #d8ccb8;
+  --nd-desk: #b78d68;
+  --nd-desk-front: #9a7454;
+  --nd-monitor: #2a3040;
+  --nd-screen: #1c2333;
+  --nd-skin: #d7a582;
+  --nd-skin-shade: #bf8b68;
+  --nd-hair: #2a2224;
+  --nd-hoodie: #5a7198;
+  --nd-hoodie-shade: #4a5f84;
+  --nd-chair: #3a4154;
+  --nd-chair-2: #2f3546;
+  --nd-plant: #5d876a;
+  --nd-plant-2: #4b7258;
+  --nd-pot: #b06f4f;
+  --nd-book-1: #6f8bb3;
+  --nd-book-2: #b9735a;
+  --nd-book-3: #e0cfac;
+  --nd-mug: #fbfaf7;
+  --nd-lamp: #626a80;
+  --nd-light: #e8a75d;
+  --nd-screen-glow: #7a93b8;
+  --nd-code-1: #7a93b8;
+  --nd-code-2: #e8a75d;
+  --nd-code-3: #9fb7a0;
+  --nd-code-4: #b9a4c9;
+  --nd-code-dim: #3b4560;
+  --nd-note-1: #f0c67f;
+  --nd-note-2: #a9c0dc;
+  --nd-lamp-on: 0;
+  --nd-glow-strength: 0.12;
+}
+
+.dark {
+  --background: #0f1420;
+  --background-2: #131929;
+  --card: #151b2b;
+  --card-hover: #192033;
+  --border: #262f44;
+  --foreground: #e6e4df;
+  --muted-foreground: #9aa3b2;
+  --primary: #e8a75d;
+  --primary-strong: #f0b977;
+  --primary-foreground: #1a1206;
+  --secondary: #7a93b8;
+  --ring: #e8a75d;
+  --glow: rgba(232, 167, 93, 0.09);
+  --dot: rgba(230, 228, 223, 0.055);
+
+  /* NightDesk illustration — night */
+  --nd-wall: #161d2e;
+  --nd-wall-2: #121827;
+  --nd-frame: #2a3349;
+  --nd-sill: #232b3f;
+  --nd-desk: #3b2f2a;
+  --nd-desk-front: #2a221f;
+  --nd-monitor: #1b2131;
+  --nd-screen: #0e1524;
+  --nd-skin: #b8896a;
+  --nd-skin-shade: #8f6750;
+  --nd-hair: #17151a;
+  --nd-hoodie: #2b3854;
+  --nd-hoodie-shade: #212c43;
+  --nd-chair: #191e2b;
+  --nd-chair-2: #141824;
+  --nd-plant: #3f5a4a;
+  --nd-plant-2: #33493d;
+  --nd-pot: #74493a;
+  --nd-book-1: #4d6283;
+  --nd-book-2: #8a5545;
+  --nd-book-3: #a99a7d;
+  --nd-mug: #cfc9bd;
+  --nd-lamp: #394055;
+  --nd-light: #e8a75d;
+  --nd-screen-glow: #7a93b8;
+  --nd-code-dim: #34405a;
+  --nd-note-1: #c99a55;
+  --nd-note-2: #6d84a6;
+  --nd-lamp-on: 1;
+  --nd-glow-strength: 0.5;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-2: var(--background-2);
+  --color-card: var(--card);
+  --color-card-hover: var(--card-hover);
+  --color-border: var(--border);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-padding-top: 5rem;
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* Scale the whole (rem-based) layout up on large screens so it fills them. */
+  @media (min-width: 1280px) {
+    html {
+      font-size: 106.25%; /* 17px */
+    }
+  }
+  @media (min-width: 1536px) {
+    html {
+      font-size: 118.75%; /* 19px */
+    }
+  }
+  @media (min-width: 1920px) {
+    html {
+      font-size: 131.25%; /* 21px */
+    }
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    transition:
+      background-color 0.5s ease,
+      color 0.5s ease;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 30%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* --- Textures & light ---------------------------------------------------- */
+@utility bg-dots {
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@utility lamp-glow {
+  background: radial-gradient(ellipse 60% 55% at 72% 38%, var(--glow), transparent 70%);
+}
+
+/* --- Code blocks (Shiki dual theme) ------------------------------------- */
+.code-block pre {
+  overflow-x: auto;
+  padding: 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  font-family: var(--font-mono);
+  background: transparent !important;
+}
+
+.code-block .shiki span {
+  color: var(--shiki-light);
+}
+
+.dark .code-block .shiki span {
+  color: var(--shiki-dark);
+}
+
+/* --- NightDesk illustration ---------------------------------------------- */
+.nd-night,
+.nd-day {
+  transition: opacity 0.8s ease;
+}
+.nd-day {
+  opacity: 1;
+}
+.nd-night {
+  opacity: 0;
+}
+.dark .nd-day {
+  opacity: 0;
+}
+.dark .nd-night {
+  opacity: 1;
+}
+
+.nd-lamp-light {
+  opacity: var(--nd-lamp-on);
+  transition: opacity 0.8s ease;
+}
+
+.nd-screen-glow {
+  opacity: var(--nd-glow-strength);
+  transition: opacity 0.8s ease;
+}
+
+.nd-layer {
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: transform;
+}
+.nd-layer-back {
+  transform: translate3d(calc(var(--nd-px, 0) * -4px), calc(var(--nd-py, 0) * -3px), 0);
+}
+.nd-layer-mid {
+  transform: translate3d(calc(var(--nd-px, 0) * 2px), calc(var(--nd-py, 0) * 1.5px), 0);
+}
+.nd-layer-front {
+  transform: translate3d(calc(var(--nd-px, 0) * 6px), calc(var(--nd-py, 0) * 4px), 0);
+}
+
+.nd-typing,
+.nd-steam path,
+.nd-cursor,
+.nd-hand {
+  transform-box: fill-box;
+}
+.nd-typing {
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nd-steam path {
+    animation: nd-steam 4.2s ease-out infinite;
+  }
+  .nd-steam path:nth-child(2) {
+    animation-delay: 1.4s;
+  }
+  .nd-steam path:nth-child(3) {
+    animation-delay: 2.8s;
+  }
+  .nd-star {
+    animation: nd-twinkle 5s ease-in-out infinite;
+  }
+  .nd-star:nth-child(2n) {
+    animation-duration: 7s;
+    animation-delay: 1.2s;
+  }
+  .nd-star:nth-child(3n) {
+    animation-duration: 6s;
+    animation-delay: 2.5s;
+  }
+  .nd-flicker {
+    animation: nd-flicker 9s ease-in-out infinite;
+  }
+  .nd-typing {
+    animation: nd-type 6s infinite;
+  }
+  .nd-cursor {
+    animation:
+      nd-cursor-move 6s infinite,
+      nd-blink 1s steps(1) infinite;
+  }
+  .nd-hand {
+    animation: nd-tap 6s ease-in-out infinite;
+  }
+  .nd-hand-2 {
+    animation-delay: 0.35s;
+  }
+}
+
+@keyframes nd-steam {
+  0% {
+    transform: translateY(6px) scaleX(0.9);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateY(-22px) scaleX(1.15);
+    opacity: 0;
+  }
+}
+
+@keyframes nd-twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes nd-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  47% {
+    opacity: 1;
+  }
+  49% {
+    opacity: 0.9;
+  }
+  51% {
+    opacity: 0.97;
+  }
+  53% {
+    opacity: 0.92;
+  }
+  56% {
+    opacity: 1;
+  }
+}
+
+/* A new line "types" across the screen, holds, then the cycle repeats. */
+@keyframes nd-type {
+  0% {
+    transform: scaleX(0);
+    animation-timing-function: steps(14, end);
+  }
+  55%,
+  92% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+@keyframes nd-cursor-move {
+  0% {
+    transform: translateX(0);
+    animation-timing-function: steps(14, end);
+  }
+  55%,
+  100% {
+    transform: translateX(98px);
+  }
+}
+
+@keyframes nd-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes nd-tap {
+  0%,
+  58%,
+  100% {
+    transform: translateY(0);
+  }
+  8%,
+  24%,
+  40% {
+    transform: translateY(1.6px);
+  }
+  16%,
+  32%,
+  48% {
+    transform: translateY(0);
+  }
 }
