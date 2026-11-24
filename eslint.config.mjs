@@ -24,6 +24,7 @@ const eslintConfig = [
       ".next/**",
       "out/**",
       "build/**",
+      ".next-verify/**",
       "coverage/**",
       "playwright-report/**",
       "test-results/**",

@@ -47,16 +47,34 @@ export const achievements = [
     body: "Data-structures and algorithms problems solved.",
   },
   {
-    title: "ISRO YUVIKA 2022",
-    value: "Selected",
-    body: "Selected for ISRO's national Young Scientist Programme at VSSC, Thiruvananthapuram.",
-  },
-  {
     title: "CGPA",
     value: "9.56",
     body: "B.Tech Computer Science & Engineering, VIT Chennai.",
   },
 ] as const;
+
+/** Shown as a large photo card at the top of the Achievements section. */
+export const featuredAchievement = {
+  eyebrow: "ISRO · Young Scientist Programme",
+  title: "ISRO YUVIKA 2022",
+  badge: "Top 150 in India",
+  image: {
+    src: "/images/yuvika-2022.jpg",
+    width: 1600,
+    height: 1066,
+    alt: "Dipesh receiving his YUVIKA 2022 certificate on stage from an ISRO official, in front of the YUVIKA banner.",
+  },
+  paragraphs: [
+    "Selected among the top 150 students across India for ISRO's YUVIKA 2022 programme — a 15-day residential workshop held at ISRO Trivandrum.",
+    "I learned rocket science, satellite communication and space technology directly from ISRO scientists, witnessed a live rocket launch, and interacted closely with the professionals shaping India's space research future.",
+  ],
+  points: [
+    "Rocket science",
+    "Satellite communication",
+    "Space technology",
+    "Live launch",
+  ],
+} as const;
 
 export interface Stat {
   /** Numeric value to count up to. */
